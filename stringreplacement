@@ -1,0 +1,30 @@
+#include <windows.h>
+
+void replaceStrings(HWND hwnd) 
+{
+    int length = GetWindowTextLength(hwnd);
+    
+    char* buffer = new char[length + 1];
+    
+    GetWindowText(hwnd, buffer, length + 1);
+    
+    for (int i = 0; i < length; i++) {
+        buffer[i] = 'X'; // replace each character with 'X'
+    }
+    
+    SetWindowText(hwnd, buffer);
+    
+    delete[] buffer;
+}
+
+BOOL CALLBACK EnumWindowsProc(HWND hwnd, LPARAM lParam)
+{
+    replaceStrings(hwnd);
+    return TRUE;
+}
+
+int main()
+{
+    EnumWindows(EnumWindowsProc, 0);
+    return 0;
+}
